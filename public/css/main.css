@@ -1,0 +1,212 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#getroomdiv {
+  display: block;
+  width: 360px;
+  height: 360px;
+
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20vh;
+
+  border: .5px solid black;
+}
+
+#getroomdiv .optiondiv {
+  width: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  height: 100%;
+  display: flex;
+
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+#getroomdiv .optiondiv:hover {
+  cursor: pointer;
+}
+
+
+#getroomdiv #topdiv {
+  display: flex;
+
+  width: 100%;
+  height: 70px;
+  background-color: #F3DC05;
+}
+
+.createjoindiv {
+  width: 100%;
+  height: calc(100% - 70px);
+  background-color: rgb(206, 206, 206);
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.createjoindiv>input {
+
+  width: 150px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.createjoindiv>input:first-child {
+  margin-top: 55px;
+}
+
+.createjoindiv>button {
+  width: 150px;
+  padding: 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+#createroomdiv {
+  background-color: #F3DC05;
+}
+
+#joinroomdiv {
+  display: none;
+  background-color: #F18904;
+}
+
+
+
+.error {
+  color: red;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+#gamediv {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  background-color: #F3DC05;
+}
+
+.playerdiv {
+  display: flex;
+
+  height: 15px;
+  padding: 10px;
+  align-items: center;
+}
+
+.playerdiv>div {
+  margin-right: 5px;
+}
+
+#gamediv>#roominfo {
+  background-color: gold;
+}
+
+#gamediv>#roominfo>#roomtext {
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+#gamediv>#roominfo>#roomtext>span {
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: 17px;
+}
+
+.onlineplayercircle {
+  width: 10px;
+  height: 10px;
+
+  display: block;
+  border-radius: 100%;
+}
+
+#player1circle {
+  background-color: rgb(71, 220, 26);
+}
+
+#player2circle {
+  background-color: gray;
+}
+
+.whiteplayertext {
+  color: white;
+  font-weight: 800;
+  margin-left: 5px;
+}
+
+.blackplayertext {
+  color: black;
+  font-weight: 800;
+  margin-left: 5px;
+}
+
+
+#boarddiv {
+  width: 600px;
+  height: 600px;
+  display: block;
+  background-color: red;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#boarddiv>div {
+  display: flex;
+  height: 75px;
+  width: 100%;
+}
+
+#boarddiv>div>div {
+  background-color: white;
+  height: 100%;
+  width: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.piecebg {
+  width: 50px;
+  height: 50px;
+  border: .5px solid black;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#boarddiv>div:nth-child(odd)>div:nth-child(even) {
+  background-color: gray;
+}
+
+#boarddiv>div:nth-child(even)>div:nth-child(odd) {
+  background-color: gray;
+}
+
+.blacktransform {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+#whoseturn {
+  text-align: center;
+  margin: 10px;
+  font-size: 25px;
+}
+#turncolorspan {
+  color: white;
+}

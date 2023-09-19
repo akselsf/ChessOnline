@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chess</title>
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+
+<body>
+  <div id="getroomdiv">
+    <div id="topdiv">
+      <div class="optiondiv" id="createroomtop">
+        Create
+      </div>
+      <div class="optiondiv" id="joinroomtop">
+        Join
+      </div>
+    </div>
+    <div class="createjoindiv" id="createroomdiv">
+      <input id="create_roomname" type="text" placeholder="Name" name="" id="">
+      <input id="create_roompass" type="text" placeholder="Password" name="" id="">
+      <button id="createroombtn">Create</button>
+      <p id="createrror" class="error"></p>
+    </div>
+    <div class="createjoindiv" id="joinroomdiv">
+      <input id="join_roomname" type="text" placeholder="Name" name="" id="">
+      <input id="join_roompass" type="text" placeholder="Password" name="" id="">
+      <button id="joinroombtn">Join</button>
+      <p id="joinerror" class="error"></p>
+    </div>
+  </div>
+  <div id="gamediv">
+    <span id="roominfo">
+      <div id="roomtext">Room: <span id="roomidspan"></span></div>
+      <div class="playerdiv">
+        <div id="player1circle" class="onlineplayercircle"></div><span id="player1name"></span><span class="colortext"
+          id="player1colortext"></span>
+      </div>
+      <div class="playerdiv">
+        <div id="player2circle" class="onlineplayercircle"></div><span id="player2name"></span><span class="colortext"
+          id="player2colortext"></span>
+      </div>
+    </span>
+
+    <p id="whoseturn">Current turn: <span id="turncolorspan">WHITE</span></p>
+
+    <div id="boarddiv">
+      <div>
+        <div id="0:0"></div>
+        <div id="1:0"></div>
+        <div id="2:0"></div>
+        <div id="3:0"></div>
+        <div id="4:0"></div>
+        <div id="5:0"></div>
+        <div id="6:0"></div>
+        <div id="7:0"></div>
+      </div>
+      <div>
+        <div id="0:1"></div>
+        <div id="1:1"></div>
+        <div id="2:1"></div>
+        <div id="3:1"></div>
+        <div id="4:1"></div>
+        <div id="5:1"></div>
+        <div id="6:1"></div>
+        <div id="7:1"></div>
+      </div>
+      <div>
+        <div id="0:2"></div>
+        <div id="1:2"></div>
+        <div id="2:2"></div>
+        <div id="3:2"></div>
+        <div id="4:2"></div>
+        <div id="5:2"></div>
+        <div id="6:2"></div>
+        <div id="7:2"></div>
+      </div>
+      <div>
+        <div id="0:3"></div>
+        <div id="1:3"></div>
+        <div id="2:3"></div>
+        <div id="3:3"></div>
+        <div id="4:3"></div>
+        <div id="5:3"></div>
+        <div id="6:3"></div>
+        <div id="7:3"></div>
+      </div>
+      <div>
+        <div id="0:4"></div>
+        <div id="1:4"></div>
+        <div id="2:4"></div>
+        <div id="3:4"></div>
+        <div id="4:4"></div>
+        <div id="5:4"></div>
+        <div id="6:4"></div>
+        <div id="7:4"></div>
+      </div>
+      <div>
+        <div id="0:5"></div>
+        <div id="1:5"></div>
+        <div id="2:5"></div>
+        <div id="3:5"></div>
+        <div id="4:5"></div>
+        <div id="5:5"></div>
+        <div id="6:5"></div>
+        <div id="7:5"></div>
+      </div>
+      <div>
+        <div id="0:6"></div>
+        <div id="1:6"></div>
+        <div id="2:6"></div>
+        <div id="3:6"></div>
+        <div id="4:6"></div>
+        <div id="5:6"></div>
+        <div id="6:6"></div>
+        <div id="7:6"></div>
+      </div>
+      <div>
+        <div id="0:7"></div>
+        <div id="1:7"></div>
+        <div id="2:7"></div>
+        <div id="3:7"></div>
+        <div id="4:7"></div>
+        <div id="5:7"></div>
+        <div id="6:7"></div>
+        <div id="7:7"></div>
+      </div>
+    </div>
+  </div>
+  <script src="../socket.io/socket.io.js"></script>
+  <script src="../js/moves.js"></script>
+  <script>
+    var socket = io();
+
+    var boarddiv = document.getElementById('boarddiv');
+    var selected = 0;
+    var color = 0;
+
+    Array.from(boarddiv.children).forEach(div => {
+      Array.from(div.children).forEach(piece => {
+        piece.addEventListener('click', function () {
+          if (selected != 0) {
+            if (selected.x != Number(this.id[0]) || selected.y != Number(this.id[2])) {
+              var oldd = {
+                x: selected.x,
+                y: selected.y
+              }
+              selected = 0;
+              console.log('moved')
+              socket.emit('chosemove', {
+                old: oldd,
+                new: {
+                  y: Number(this.id[2]),
+                  x: Number(this.id[0])
+                }
+              })
+            }
+          }
+        })
+      })
+    })
+
+    
+    var getroomdiv = document.getElementById('getroomdiv');
+    var gamediv = document.getElementById('gamediv');
+    var create_top_div = document.getElementById('createroomtop');
+    var join_top_div = document.getElementById('joinroomtop');
+    var col1 = "#F3DC05";
+    var col2 = "#F18904";
+    create_top_div.style.backgroundColor = col1;
+    join_top_div.style.backgroundColor = col2;
+
+    create_top_div.addEventListener('click', function (e) {
+      document.getElementById('joinroomdiv').style.display = "none";
+      document.getElementById('createroomdiv').style.display = "flex";
+    })
+    join_top_div.addEventListener('click', function (e) {
+      document.getElementById('createroomdiv').style.display = "none";
+      document.getElementById('joinroomdiv').style.display = "flex";
+    })
+    document.getElementById('createroombtn').addEventListener('click', function (e) {
+      var name = document.getElementById('create_roomname');
+      var pass = document.getElementById('create_roompass');
+      if (name.value != '' && pass.value != '') {
+        document.getElementById('createroombtn').disabled = true;
+        document.getElementById('joinroombtn').disabled = true;
+        document.getElementById('createrror').innerText = "";
+        socket.emit('createroom', {
+          name: name.value,
+          pass: pass.value
+        });
+
+      }
+    })
+    document.getElementById('joinroombtn').addEventListener('click', function (e) {
+      var name = document.getElementById('join_roomname');
+      var pass = document.getElementById('join_roompass');
+      if (name.value != '' && pass.value != '') {
+        document.getElementById('joinroombtn').disabled = true;
+        document.getElementById('createroombtn').disabled = true;
+        document.getElementById('joinerror').innerText = "";
+        socket.emit('joinroom', {
+          name: name.value,
+          pass: pass.value
+        });
+
+      }
+    });
+    socket.on('roomcreate_error', (error) => {
+      document.getElementById('createrror').innerText = error;
+      document.getElementById('createroombtn').disabled = false;
+      document.getElementById('joinroombtn').disabled = false;
+    });
+    socket.on('roomjoin_error', (error) => {
+      document.getElementById('joinerror').innerText = error;
+      document.getElementById('joinroombtn').disabled = false;
+      document.getElementById('createroombtn').disabled = false;
+    })
+
+    socket.on('createdroom', (room) => {
+      getroomdiv.style.display = "none";
+      gamediv.style.display = "block";
+      document.getElementById('roomidspan').innerText = `[ ${room.name}, ${room.pass} ]`;
+      socket.emit('updateroom_request', {
+        pass: room.pass,
+        name: room.name
+      });
+
+      socket.emit('getboard');
+    });
+
+    function resetTiles() {
+      for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+          if (i % 2 == 1) {
+            if (j % 2 == 0) {
+              document.getElementById(i + ":" + j).style.backgroundColor = "gray";
+            } else {
+              document.getElementById(i + ":" + j).style.backgroundColor = "white";
+            }
+          } else {
+            if (j % 2 == 1) {
+              document.getElementById(i + ":" + j).style.backgroundColor = "gray";
+            } else {
+              document.getElementById(i + ":" + j).style.backgroundColor = "white";
+            }
+          }
+        }
+      }
+    }
+    var prev = 0;
+
+    socket.on('boardrecieved', (inn) => {
+      const board = inn.board;
+      document.getElementById('turncolorspan').style.color = inn.turn;
+      document.getElementById('turncolorspan').innerText = inn.turn.toUpperCase();
+      console.log(inn)
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          resetTiles()
+          document.getElementById(j + ':' + i).innerHTML = "";
+          if (board[i][j]) {
+            
+            
+            var el = document.createElement('div');
+            el.className = "piecebg";
+            el.style.backgroundColor = board[i][j].color == 'white' ? "white" : "black";
+            el.style.color = board[i][j].color == 'white' ? "black" : "white";
+
+            el.innerText = board[i][j].type;
+            el.id = j + ":" + i;
+            el.dataset.color = board[i][j].color;
+
+            el.addEventListener('click', function () {
+              resetTiles(board)
+              let org = {
+                x: Number(this.id[0]),
+                y: Number(this.id[2])
+              };
+              if (board[org.y][org.x].color == color) {
+                selected = org;
+              }
+              var available = moves[this.innerText].validMove(board, org);
+
+              for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+
+                  let next = [i, j];
+
+                  available.forEach(p => {
+                    if (next[0] == p[0] && next[1] == p[1]) {
+                      document.getElementById(j + ":" + i).style.backgroundColor = "lightblue";
+                    }
+                  })
+
+
+                }
+
+
+              }
+            })
+            document.getElementById(j + ':' + i).appendChild(el);
+
+          }
+
+        }
+      }
+    })
+
+    socket.on('joinedroom', (room) => {
+      getroomdiv.style.display = "none";
+      gamediv.style.display = "block";
+      document.getElementById('roomidspan').innerText = `[ ${room.name}, ${room.pass} ]`;
+      socket.emit('updateroom_request', {
+        pass: room.pass,
+        name: room.name
+      });
+
+      socket.emit('getboard');
+
+    });
+    socket.on('updateroom_members', (room) => {
+      if (room.users[0]) {
+        document.getElementById('player1name').innerText = room.users[0] == socket.id ? room.users[0] + ' (You)' :
+          room.users[0];
+        document.getElementById('player1circle').style.backgroundColor = 'rgb(71, 220, 26)';
+        document.getElementById('player1colortext').innerText = room.blackandwhite.black == room.users[0] ?
+          "[ BLACK ]" : "[ WHITE ]";
+        document.getElementById('player1colortext').className = room.blackandwhite.black == room.users[0] ?
+          "blackplayertext " : "whiteplayertext";
+      }
+      if (room.users[1]) {
+        document.getElementById('player2name').innerText = room.users[1] == socket.id ? room.users[1] + ' (You)' :
+          room.users[1];
+
+        document.getElementById('player2circle').style.backgroundColor = 'rgb(71, 220, 26)';
+        document.getElementById('player2colortext').innerText = room.blackandwhite.black == room.users[1] ?
+          "[ BLACK ]" : "[ WHITE ]";
+        document.getElementById('player2colortext').className = room.blackandwhite.black == room.users[1] ?
+          "blackplayertext " : "whiteplayertext";
+      } else {
+        document.getElementById('player2circle').style.backgroundColor = 'gray';
+        document.getElementById('player2name').innerText = "";
+        document.getElementById('player2colortext').innerText = "";
+      }
+      if (room.blackandwhite.black == socket.id) {
+        color = "black";
+        document.getElementById('boarddiv').style.transform = 'rotate(180deg)';
+      } else {
+        color = "white";
+      }
+    });
+  </script>
+</body>
+
+</html>
